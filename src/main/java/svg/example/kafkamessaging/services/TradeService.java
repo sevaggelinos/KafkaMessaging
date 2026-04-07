@@ -1,5 +1,6 @@
 package svg.example.kafkamessaging.services;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -7,17 +8,18 @@ import svg.example.kafkamessaging.model.Trade;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class TradeService {
 
 	private final KafkaTemplate<String, Trade> kafkaTemplate;
-	private final String TOPIC = "svg-trade-requests";
+	private static final String TRADE_TOPIC = "svg-trade-requests";
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
 
 	@PostConstruct
 	public void init() {
-		System.out.println("DEBUG: Kafka Servers -> " + bootstrapServers);
+		log.debug("DEBUG: Kafka Servers -> {}", bootstrapServers);
 	}
 	public TradeService(KafkaTemplate<String, Trade> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
@@ -28,7 +30,7 @@ public class TradeService {
 		String key = trade.tradeDate() + "-" + trade.tradeID();
 
 		// Send to Kafka with Key and Value
-		this.kafkaTemplate.send(TOPIC, key, trade);
+		this.kafkaTemplate.send(TRADE_TOPIC, key, trade);
 	}
 
 	public void sendTrades(List<Trade> trades) {
