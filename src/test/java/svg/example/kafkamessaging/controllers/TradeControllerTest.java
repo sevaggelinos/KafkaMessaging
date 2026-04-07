@@ -9,13 +9,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import svg.example.kafkamessaging.model.Trade;
+import svg.example.kafkamessaging.models.Trade;
 import svg.example.kafkamessaging.services.TradeService;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,7 +36,7 @@ public class TradeControllerTest {
     @BeforeMethod
     public void setUp() {
         // Initialize Mockito annotations (@Mock and @InjectMocks)
-        MockitoAnnotations.openMocks(this);
+        openMocks(this);
 
         // Standalone setup: Test only the controller without loading the full Spring Context
         this.mockMvc = MockMvcBuilders.standaloneSetup(tradeController).build();

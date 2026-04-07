@@ -1,4 +1,4 @@
-package svg.example.kafkamessaging.model;
+package svg.example.kafkamessaging.models;
 
 public record Trade(
 		String tradeID,
