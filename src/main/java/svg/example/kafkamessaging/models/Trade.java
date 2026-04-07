@@ -1,5 +1,7 @@
 package svg.example.kafkamessaging.models;
 
+import tools.jackson.databind.ObjectMapper;
+
 public record Trade(
 		String tradeID,
 		String tradeDate,
@@ -12,4 +14,9 @@ public record Trade(
 		Double value,
 		String traderCode,
 		String clientID
-) {}
+) {
+	private static final ObjectMapper mapper = new ObjectMapper();
+	public String toJson() {
+		return mapper.writeValueAsString(this);
+	}
+}

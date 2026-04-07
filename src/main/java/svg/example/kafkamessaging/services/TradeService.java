@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class TradeService {
 
-	private final KafkaTemplate<String, Trade> kafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 	private static final String TRADE_TOPIC = "svg-trade-requests";
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
@@ -21,16 +21,16 @@ public class TradeService {
 	public void init() {
 		log.debug("DEBUG: Kafka Servers -> {}", bootstrapServers);
 	}
-	public TradeService(KafkaTemplate<String, Trade> kafkaTemplate) {
+	public TradeService(KafkaTemplate<String, String> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
 	}
 
 	public void sendTrade(Trade trade) {
 		// Construct the key: tradeDate-tradeID
 		String key = trade.tradeDate() + "-" + trade.tradeID();
-
+		String jsonTrade = trade.toJson();
 		// Send to Kafka with Key and Value
-		this.kafkaTemplate.send(TRADE_TOPIC, key, trade);
+		this.kafkaTemplate.send(TRADE_TOPIC, key, jsonTrade);
 	}
 
 	public void sendTrades(List<Trade> trades) {
