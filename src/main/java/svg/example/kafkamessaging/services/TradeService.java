@@ -27,7 +27,7 @@ public class TradeService {
 
 	public void sendTrade(Trade trade) {
 		// Construct the key: tradeDate-tradeID
-		String key = trade.tradeDate() + "-" + trade.tradeID();
+		String key = trade.tradeDate() + "-" + trade.tradeID() + "-" + trade.side();
 		String jsonTrade = trade.toJson();
 		// Send to Kafka with Key and Value
 		this.kafkaTemplate.send(TRADE_TOPIC, key, jsonTrade);
